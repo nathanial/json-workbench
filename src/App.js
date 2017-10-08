@@ -4,15 +4,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import * as cxs from 'cxs';
 import Sidebar from './Sidebar';
-
-const sidebarClass = cxs({
-  width: '100px',
-  position: 'absolute',
-  left: 0,
-  top: 0,
-  bottom: 0,
-  background: '#67AAF9'
-});
+import EditPage from './EditPage';
 
 const contentClass = cxs({
   position: 'absolute',
@@ -21,10 +13,6 @@ const contentClass = cxs({
   bottom: 0,
   right: 0
 });
-
-function EditPage(){
-  return <h1>Edit Page</h1>
-}
 
 function SettingsPage(){
   return <h1>Settings Page</h1>;
