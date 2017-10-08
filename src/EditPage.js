@@ -52,26 +52,21 @@ class ScriptEditor extends React.Component {
 export default class EditPage extends React.Component {
     state = {
         scriptOpen: true,
-        sourceOpen: true,
-        height: 0
+        sourceOpen: true
     };
     render(){
-        const sourceHeight = this.getSourceHeight();
         const scriptHeight = this.getScriptHeight();
+        const sourceHeight = this.getSourceHeight();
         return (
             <div ref={root => this.root = root} className={editPageClass}>
                 <div className={editSidebarClass}>
                     <div className={editSidebarSectionClass}>
                         <h3 className={editSidebarHeaderClass} onClick={() => this.toggle('source')}>Source</h3>
-                        <Collapse isOpen={this.state.sourceOpen} >
-                            <SourceEditor style={{height: sourceHeight}} />
-                        </Collapse>
+                        <SourceEditor style={{display: this.state.sourceOpen ? 'block' : 'none', height: sourceHeight}} />
                     </div>
                     <div className={editSidebarSectionClass}>
                         <h3 className={editSidebarHeaderClass} onClick={() => this.toggle('script')}>Script</h3>
-                        <Collapse isOpen={this.state.scriptOpen}>
-                            <ScriptEditor style={{height: scriptHeight}}/>
-                        </Collapse>
+                        <ScriptEditor style={{display: this.state.scriptOpen ? 'block' : 'none',  height: scriptHeight}}/>
                     </div>
                 </div>
             </div>
@@ -83,7 +78,7 @@ export default class EditPage extends React.Component {
         if(this.state.scriptOpen && this.state.sourceOpen){
             return height / 2;
         } else if(!this.state.sourceOpen) {
-            return height / 2;
+            return 0;
         } else {
             return height;
         }
@@ -94,7 +89,7 @@ export default class EditPage extends React.Component {
         if(this.state.scriptOpen && this.state.sourceOpen){
             return height / 2;
         } else if(!this.state.scriptOpen) {
-            return height / 2;
+            return 0;
         } else {
             return height;
         }
