@@ -8,7 +8,12 @@ const editPageClass = cxs({
 });
 
 const editSidebarClass = cxs({
-    width: '600px'
+    width: '600px',
+    position: 'absolute',
+    left: 0,
+    top:0,
+    bottom: 0,
+    borderRight: '1px solid #ddd'
 });
 
 const editSidebarHeaderClass = cxs({
@@ -16,24 +21,29 @@ const editSidebarHeaderClass = cxs({
     padding: '10px 15px',
     fontSize: '18px',
     margin: 0,
-    borderBottom: '1px solid #ddd'
+    borderBottom: '1px solid #ddd',
+    borderTop: '1px solid #ddd',
+    marginTop:'-1px'
 });
 
 const editSidebarSectionClass = cxs({
-    border: '1px solid #ddd',
+    borderRight: '0px solid #ddd'
 });
 
 const sourceEditorClass = cxs({
+    transition: 'height 0.2s',
+    overflow: 'hidden'
 });
 
 const scriptEditorClass = cxs({
+    transition: 'height 0.2s',
+    overflow: 'hidden'
 });
 
 class SourceEditor extends React.Component {
     render(){
         return (
             <div className={sourceEditorClass} {...this.props}>
-                Source Editor
             </div>
         );
     }
@@ -43,7 +53,6 @@ class ScriptEditor extends React.Component {
     render(){
         return (
             <div className={scriptEditorClass} {...this.props}>
-                Script Editor
             </div>
         );
     }
@@ -62,11 +71,11 @@ export default class EditPage extends React.Component {
                 <div className={editSidebarClass}>
                     <div className={editSidebarSectionClass}>
                         <h3 className={editSidebarHeaderClass} onClick={() => this.toggle('source')}>Source</h3>
-                        <SourceEditor style={{display: this.state.sourceOpen ? 'block' : 'none', height: sourceHeight}} />
+                        <SourceEditor style={{height: sourceHeight}} />
                     </div>
                     <div className={editSidebarSectionClass}>
                         <h3 className={editSidebarHeaderClass} onClick={() => this.toggle('script')}>Script</h3>
-                        <ScriptEditor style={{display: this.state.scriptOpen ? 'block' : 'none',  height: scriptHeight}}/>
+                        <ScriptEditor style={{height: scriptHeight}}/>
                     </div>
                 </div>
             </div>
@@ -101,7 +110,6 @@ export default class EditPage extends React.Component {
     
         var height = Math.max( body.scrollHeight, body.offsetHeight, 
                            html.clientHeight, html.scrollHeight, html.offsetHeight );
-        console.log("height", height);
         this.setState({
             height
         })
