@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'codemirror/lib/codemirror.css';
 import * as cxs from 'cxs';
 import Sidebar from './Sidebar';
 import EditPage from './EditPage';
