@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 const sidebarColor = '#67AAF9';
 const hoverColor = color(sidebarColor).darken(0.1).hex();
-const selectedColor = color(sidebarColor).darken(0.2).hex();
+const selectedColor = color('#598AC4').darken(0.2).hex();
 
 const sidebarClass = cxs({
   width: '100px',
@@ -17,13 +17,11 @@ const sidebarClass = cxs({
   background: sidebarColor
 });
 
-console.log("Sidebar Color", sidebarColor);
-console.log("Hover Color", hoverColor);
-
 const linkClass = cxs({
   color: 'white',
   fontWeight: 'bold',
   cursor: 'pointer',
+  padding: '20px 15px',
   ':hover': {
     background: hoverColor,
     color: 'white'
@@ -41,6 +39,14 @@ const selectedLinkClass = cxs({
   },
 });
 
+const titleClass = cxs({
+  color: 'white',
+  textAlign: 'center',
+  fontSize:'11px',
+  margin: '5px 10px',
+  display: 'block'
+});
+
 export default class Sidebar extends React.Component {
   static propTypes = {
     selectedPage: PropTypes.string.isRequired,
@@ -50,25 +56,31 @@ export default class Sidebar extends React.Component {
     return (
       <div className={sidebarClass}>
         <Nav vertical>
-          <NavItem>
-            {this.renderNav("Edit")}
+          <NavItem style={{marginTop: 10}}>
+            <img style={{marginLeft: '12px'}} width="75px" height="75px" src="icons/Toolbox Logo.svg" />
+            <p className={titleClass}>JSON Workbench</p>
           </NavItem>
-          <NavItem>
-            {this.renderNav("Settings")}
+          <NavItem style={{marginTop:'50px'}}>
+            {this.renderNav("Edit", "icons/Edit.png")}
+          </NavItem>
+          <NavItem style={{position: 'absolute', bottom: 0,left:0,right:0}}>
+            {this.renderNav("Settings", "icons/Settings.svg")}
           </NavItem>
         </Nav>
       </div>
     );  
   }
 
-  renderNav(name){
+  renderNav(name, image){
+    let classes = linkClass;
     if(this.props.selectedPage === name){
-      return (
-        <NavLink onClick={() => this.props.onSelectedPageChanged(name)} className={linkClass + ' ' + selectedLinkClass}>{name}</NavLink>
-      );
+      classes += ' ' + selectedLinkClass;
     }
+    
     return (
-      <NavLink onClick={() => this.props.onSelectedPageChanged(name)} className={linkClass} href="#">{name}</NavLink>    
+      <NavLink onClick={() => this.props.onSelectedPageChanged(name)} className={classes}>
+        <img width="35px" height="35px" src={image} style={{color:'white', position: 'relative', left: '15px'}} />
+      </NavLink>
     );
   }
 }
