@@ -38,6 +38,11 @@ const sourceEditorClass = cxs({
     overflow: 'hidden'
 });
 
+const editorClass = cxs({
+    transition: 'height 0.2s ease-in-out',
+    overflow: 'hidden'
+});
+
 const scriptEditorClass = cxs({
     transition: 'height 0.2s ease-in-out',
     overflow: 'hidden'
@@ -51,15 +56,18 @@ const outputClass = cxs({
     left: '500px'
 });
 
-class SourceEditor extends React.Component {
+class Editor extends React.Component {
     static propTypes = {
-        source: PropTypes.string.isRequired
+        value: PropTypes.string.isRequired,
+        onChange: PropTypes.func.isRequired
     }
     render(){
         const options = {lineNumbers: true, mode:'javascript'};
+        const style = _.extend({fontSize: localStorage.getItem('fontSize') + 'px'}, this.props.style);
         return (
-            <div className={sourceEditorClass} {..._.omit(this.props, ['source'])}>
-                <CodeMirror value={this.props.source} 
+            <div className={editorClass} {..._.omit(this.props, ['value', 'onChange'])}
+                style={style}>
+                <CodeMirror value={this.props.value} 
                             onChange={this.updateCode} 
                             options={options} />
             </div>
@@ -71,9 +79,9 @@ class SourceEditor extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.editor && !_.isEqual(nextProps.source, this.props.source)){
+        if(this.editor && !_.isEqual(nextProps.value, this.props.value)){
             const mirror = this.editor.getCodeMirror();
-            mirror.getDoc().setValue(nextProps.source);
+            mirror.getDoc().setValue(nextProps.value);
         }
     }
 }
@@ -84,34 +92,6 @@ function visit(source){
 }
 `;
 
-class ScriptEditor extends React.Component {
-    static propTypes = {
-        script: PropTypes.string.isRequired
-    }
-    render(){
-        const options = {lineNumbers: true, mode:'javascript'};
-        return (
-            <div className={scriptEditorClass} {..._.omit(this.props, ['script'])}>
-                <CodeMirror value={this.props.script} 
-                            editor={editor => this.editor = editor}
-                            onChange={this.updateCode} 
-                            options={options} />
-            </div>
-        );
-    }
-
-    updateCode = (newValue) => {
-        this.props.onChange(newValue);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if(this.editor){
-            const mirror = this.editor.getCodeMirror();
-            mirror.getDoc().setValue(nextProps.script);
-        }
-    }
-}
-
 class Output extends React.Component {
     static propTypes = {
         value: PropTypes.string.isRequired
@@ -119,7 +99,7 @@ class Output extends React.Component {
     render(){
         const options = {lineNumbers: true, mode:'javascript', readOnly: true};
         return (
-            <div className={outputClass}>
+            <div className={outputClass} style={{fontSize: localStorage.getItem('fontSize') + 'px'}}>
                 <CodeMirror ref={editor => this.editor = editor} 
                             value={this.props.value} 
                             options={options} />
@@ -152,15 +132,15 @@ export default class EditPage extends React.Component {
                 <div className={editSidebarClass}>
                     <div className={editSidebarSectionClass}>
                         <h3 className={editSidebarHeaderClass} onClick={() => this.toggle('source')}>Source</h3>
-                        <SourceEditor source={this.state.source} 
-                                      style={{height: sourceHeight}}
-                                      onChange={this.onUpdateSource} />
+                        <Editor value={this.state.source} 
+                                style={{height: sourceHeight}}
+                                onChange={this.onUpdateSource} />
                     </div>
                     <div className={editSidebarSectionClass}>
                         <h3 className={editSidebarHeaderClass} onClick={() => this.toggle('script')}>Script</h3>
-                        <ScriptEditor script={this.state.script}
-                                      style={{height: scriptHeight}}
-                                      onChange={this.onUpdateScript}/>
+                        <Editor value={this.state.script}
+                                style={{height: scriptHeight}}
+                                onChange={this.onUpdateScript}/>
                     </div>
                 </div>
                 <Output value={this.state.output} />    

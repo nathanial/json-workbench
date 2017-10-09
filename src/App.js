@@ -6,6 +6,7 @@ import 'codemirror/lib/codemirror.css';
 import * as cxs from 'cxs';
 import Sidebar from './Sidebar';
 import EditPage from './EditPage';
+import SettingsPage from './SettingsPage';
 
 const contentClass = cxs({
   position: 'absolute',
@@ -14,10 +15,6 @@ const contentClass = cxs({
   bottom: 0,
   right: 0
 });
-
-function SettingsPage(){
-  return <h1>Settings Page</h1>;
-}
 
 const progressSpinnerClass = cxs({
   position: 'absolute',
